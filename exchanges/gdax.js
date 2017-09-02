@@ -19,17 +19,19 @@ var Trader = function(config) {
     this.asset = config.asset;
     this.currency = config.currency;
 
-    if(_.isObject(config)) {
-        this.key = config.key;
-        this.secret = config.secret;
-        this.passphrase = config.passphrase;
+    const gdaxConfig = config.gdax;
+    if(_.isObject(gdaxConfig)) {
+        this.key = gdaxConfig.key;
+        this.secret = gdaxConfig.secret;
+        this.passphrase = gdaxConfig.passphrase;
 
-        this.pair = [config.asset, config.currency].join('-').toUpperCase();
-        this.post_only = (typeof config.post_only !== 'undefined') ? config.post_only : true;
+        this.pair = [gdaxConfig.asset, gdaxConfig.currency].join('-').toUpperCase();
+        this.post_only = (typeof gdaxConfig.post_only !== 'undefined') ? gdaxConfig.post_only : true;
     }
 
     this.gdax_public = new Gdax.PublicClient(this.pair, this.use_sandbox ? 'https://api-public.sandbox.gdax.com' : undefined);
     this.gdax = new Gdax.AuthenticatedClient(this.key, this.secret, this.passphrase, this.use_sandbox ? 'https://api-public.sandbox.gdax.com' : undefined);
+    log.debug(this.gdax_public);
 }
 
 // if the exchange errors we try the same call again after
