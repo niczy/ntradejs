@@ -2,19 +2,18 @@ var config = {};
 
 config.debug = true; // for additional logging / debugging
 
-config.watch = {
-  exchange: 'poloniex',
-  currency: 'USD',
-  asset: 'BTC',
-
-};
+config.asset = 'ETH';
+config.currency = 'USD';
 
 config.gdax = {
-  key: '',
-  secret: '',
-  passphrase: '',
-  asset: 'ETH',
-  currency: 'USD'
+  key : '',
+  secret : '',
+  passphrase : '',
+};
+
+config.okcoin = {
+  key : '',
+  secret : '',
 };
 
 module.exports = config;
