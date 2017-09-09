@@ -8,10 +8,12 @@ var config = util.getConfig();
 
 var PORTFOLIO = require('./data/okcoin_portfolio.json');
 var TICKER = require('./data/okcoiin_ticker.json');
+var DEPTH = require('./data/okcoin_depth.json');
 var OkCoin = function() {};
 OkCoin.prototype = {
   getUserInfo : function(callback) { callback(null, PORTFOLIO); },
-  getTicker: function(callback) { callback(null, TICKER); }
+  getTicker: function(callback) { callback(null, TICKER); },
+  getDepth: function(callback) { callback(null, DEPTH); },
 };
 
 var stubs = {'okcoin-china' : OkCoin};
@@ -41,5 +43,14 @@ describe('exchange/okcoin', function() {
       done();
     };
     okcoin.getTicker(check);
+  });
+  it('Should correctly parse depth data', function(done) {
+    var check = function(err, depth) {
+      expect(err).to.equal(null);
+      const expectedDepth = {"asks":[[1718,18.526],[1717.8,11.223],[1715.9,3.519],[1715.8,0.01],[1715,4.853],[1713,0.03],[1712,0.3],[1711,0.01],[1710,2],[1709,3.607]],"bids":[[1702,4.059],[1701,1.03],[1700,25.748],[1696,141.33],[1692.3,2.471],[1692.1,0.06],[1692,4.118],[1690,39.376],[1689,1.002],[1688.1,0.033]]};
+      expect(depth).to.deep.equal(expectedDepth);
+      done();
+    };
+    okcoin.getDepth(check);
   });
 });

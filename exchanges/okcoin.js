@@ -15,6 +15,7 @@ var Trader = function(config) {
   this.name = 'okcoin';
   this.okcoin = new OKCoin(this.key, this.secret);
   this.lastTid = false;
+  this.config = config;
 };
 
 // if the exchange errors we try the same call again after
@@ -70,6 +71,14 @@ Trader.prototype.getTicker = function(callback) {
   }.bind(this);
 
   this.okcoin.getTicker(process, args);
+};
+
+Trader.prototype.getDepth = function(callback) {
+  var process = function(err, data) {
+    callback(err, data);
+  }; 
+  this.okcoin.getDepth(
+    callback, 'eth_cny', 10 /* size */ , 1 /* merge */);
 };
 
 // This assumes that only limit orders are being placed, so fees

@@ -16,4 +16,6 @@ config.okcoin = {
   secret : '',
 };
 
+config.depthSize = 10;
+
 module.exports = config;
