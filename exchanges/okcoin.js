@@ -74,6 +74,7 @@ Trader.prototype.getTicker = function(callback) {
 };
 
 Trader.prototype.getDepth = function(callback) {
+  // TODO: add retry.
   var process = function(err, data) {
     callback(err, data);
   }; 

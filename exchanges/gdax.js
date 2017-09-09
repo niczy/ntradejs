@@ -90,6 +90,21 @@ Trader.prototype.getTicker = function(callback) {
   this.gdax_public.getProductTicker(result);
 };
 
+Trader.prototype.getDepth = function(callback) {
+  // TODO: add retry.
+  var process = function(err, response, data) {
+    var bids = _.map(data.bids, function(item) {
+      return [ +item[0], item[1] * item[2] ];
+    });
+    var asks = _.map(data.asks, function(item) {
+      return [ +item[0], item[1] * item[2] ];
+    });
+
+    callback(err, {'bids' : bids, 'asks' : asks});
+  };
+  this.gdax_public.getProductOrderBook({'level' : 2}, process);
+};
+
 Trader.prototype.getFee = function(callback) {
   // https://www.gdax.com/fees
   const fee = this.asset == 'BTC' ? 0.0025 : 0.003;

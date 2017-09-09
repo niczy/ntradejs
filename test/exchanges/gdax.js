@@ -8,10 +8,14 @@ var config = util.getConfig();
 
 var TRADES = require('./data/gdax_trades.json');
 var PORTFOLIO = require('./data/gdax_portfolio.json');
+var DEPTH = require('./data/gdax_depth.json');
 var FakePublicClient = function() {};
 FakePublicClient.prototype = {
   getProductTrades : function(option, callback) {
     callback(null, null, TRADES);
+  },
+  getProductOrderBook : function(option, callback) {
+    callback(null, null, DEPTH);
   },
 };
 
@@ -54,4 +58,18 @@ describe('exchange/gdax', function() {
     };
     gdax.getPortfolio(check);
   });
+
+  it('Should correctly parse depth data', function(done) {
+    var check = function(err, depth) {
+      expect(err).to.equal(null);
+      const expectedDepth = {
+        "asks" : [ [ 307.81, 285.33956133 ], [ 309.28, 0.8 ] ],
+        "bids" : [ [ 307.8, 0.01 ], [ 307.75, 0.9 ] ]
+      };
+      expect(depth).to.deep.equal(expectedDepth);
+      done();
+    };
+    gdax.getDepth(check);
+  });
+
 });
