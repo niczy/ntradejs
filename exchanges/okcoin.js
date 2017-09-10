@@ -76,10 +76,11 @@ Trader.prototype.getTicker = function(callback) {
 Trader.prototype.getDepth = function(callback) {
   // TODO: add retry.
   var process = function(err, data) {
+    data.asks.sort();
     callback(err, data);
   }; 
   this.okcoin.getDepth(
-    callback, 'eth_cny', 10 /* size */ , 1 /* merge */);
+    process, 'eth_cny', 10 /* size */ , 1 /* merge */);
 };
 
 // This assumes that only limit orders are being placed, so fees

@@ -1,0 +1,115 @@
+
+
+  exchange/okcoin
+    ✓ Should correctly pars portfolio data
+    ✓ Should correct parse ticker data
+callingdepth
+[[1709,3.607],[1717.8,11.223],[1718,18.526]]
+    1) Should correctly parse depth data
+
+
+  2 passing (19ms)
+  1 failing
+
+  1) exchange/okcoin Should correctly parse depth data:
+
+      AssertionError: expected { Object (asks, bids) } to deeply equal { Object (asks, bids) }
+      + expected - actual
+
+       {
+         "asks": [
+           [
+      -      1709
+      -      3.607
+      +      1718
+      +      18.526
+           ]
+           [
+             1717.8
+             11.223
+           ]
+           [
+      -      1718
+      -      18.526
+      +      1715.9
+      +      3.519
+           ]
+      +    [
+      +      1715.8
+      +      0.01
+      +    ]
+      +    [
+      +      1715
+      +      4.853
+      +    ]
+      +    [
+      +      1713
+      +      0.03
+      +    ]
+      +    [
+      +      1712
+      +      0.3
+      +    ]
+      +    [
+      +      1711
+      +      0.01
+      +    ]
+      +    [
+      +      1710
+      +      2
+      +    ]
+      +    [
+      +      1709
+      +      3.607
+      +    ]
+         ]
+         "bids": [
+           [
+             1702
+             4.059
+           ]
+           [
+      +      1701
+      +      1.03
+      +    ]
+      +    [
+      +      1700
+      +      25.748
+      +    ]
+      +    [
+      +      1696
+      +      141.33
+      +    ]
+      +    [
+      +      1692.3
+      +      2.471
+      +    ]
+      +    [
+      +      1692.1
+      +      0.06
+      +    ]
+      +    [
+      +      1692
+      +      4.118
+      +    ]
+      +    [
+      +      1690
+      +      39.376
+      +    ]
+      +    [
+             1689
+             1.002
+           ]
+           [
+      
+      at Assertion.assertEqual (node_modules/chai/lib/chai/core/assertions.js:439:19)
+      at Assertion.ctx.(anonymous function) [as equal] (node_modules/chai/lib/chai/utils/addMethod.js:40:25)
+      at check (test/exchanges/okcoin.js:72:29)
+      at process (exchanges/okcoin.js:81:5)
+      at OkCoin.getDepth (test/exchanges/okcoin.js:16:35)
+      at Trader.getDepth (exchanges/okcoin.js:84:15)
+      at Trader.bound [as getDepth] (node_modules/lodash/dist/lodash.js:729:21)
+      at Context.<anonymous> (test/exchanges/okcoin.js:75:12)
+
+
+
