@@ -2,4 +2,5 @@ config.js
 **/*.swp
 node_modules
 tmp
+tmp.json
 test.js
