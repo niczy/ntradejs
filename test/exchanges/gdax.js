@@ -62,7 +62,7 @@ describe('exchange/gdax', function() {
   it('Should correctly parse depth data', function(done) {
     var check = function(err, depth) {
       expect(err).to.equal(null);
-      const expectedDepth = {
+      const expecteddepth = {
         "asks" : [ [ 307.81, 285.33956133 ], [ 309.28, 0.8 ] ],
         "bids" : [ [ 307.8, 0.01 ], [ 307.75, 0.9 ] ]
       };
