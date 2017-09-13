@@ -26,7 +26,6 @@ class Task {
     for (var i = 0; i < this.exchanges.length; i++) {
       for (var j = 0; j < this.exchanges.length; j++) {
         if (i != j) {
-          console.log('\n\n\n\n-----------------\nStart new task\n-----------');
           await this.tryTrade(this.exchanges[i], this.exchanges[j]);
         }
       }
@@ -34,6 +33,8 @@ class Task {
   }
 
   async tryTrade(buy, sell) {
+    logger.info('\n\n\n\n-----------------\n\n');
+    logger.info(new Date().toISOString());
     logger.info('check buying from ' + buy.name + ' and sell to ' + sell.name);
     const sellPrice = await sell.getSellPrice();
     const buyPrice = await buy.getBuyPrice();
