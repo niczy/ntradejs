@@ -18,7 +18,6 @@ class Task {
   constructor() {
     this.exchanges = [
       new Exchange('gdax', new Gdax(config), 'ETH', 'USD'),
-      // TODO: implement getDepth of bitfinex.
       new Exchange('bitfinx', new Bitfinex(config), 'ETH', 'USD')
     ];
   }
