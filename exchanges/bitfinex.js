@@ -5,8 +5,7 @@ var _ = require('lodash');
 var moment = require('moment');
 var log = require('../core/log');
 
-var Trader =
-    function(config) {
+var Trader = function(config) {
   _.bindAll(this);
   const bfConfig = config.bitfinex;
   if (_.isObject(bfConfig)) {
@@ -20,11 +19,11 @@ var Trader =
   this.currency = config.currency;
   this.pair = this.asset + this.currency;
   this.bitfinex = new Bitfinex(this.key, this.secret).rest;
-}
+};
 
-    // if the exchange errors we try the same call again after
-    // waiting 10 seconds
-    Trader.prototype.retry = function(method, args) {
+// if the exchange errors we try the same call again after
+// waiting 10 seconds
+Trader.prototype.retry = function(method, args) {
   var wait = +moment.duration(10, 'seconds');
   log.debug(this.name, 'returned an error, retrying..');
 
@@ -52,8 +51,7 @@ Trader.prototype.getDepth = function(callback) {
                           process);
 };
 
-Trader.prototype.getPortfolio =
-    function(callback) {
+Trader.prototype.getPortfolio = function(callback) {
   var args = _.toArray(arguments);
   this.bitfinex.wallet_balances(function(err, data, body) {
 
@@ -98,10 +96,10 @@ Trader.prototype.getPortfolio =
 
     callback(err, portfolio);
   }.bind(this));
-}
+};
 
-    Trader.prototype.getTicker =
-        function(callback) {
+Trader.prototype.getTicker =
+    function(callback) {
   var args = _.toArray(arguments);
   // the function that will handle the API callback
   var process = function(err, data, body) {
@@ -116,16 +114,14 @@ Trader.prototype.getPortfolio =
   this.bitfinex.ticker(this.pair, process);
 }
 
-        // This assumes that only limit orders are being placed, so fees are the
-        // "maker fee" of 0.1%.  It does not take into account volume discounts.
-        Trader.prototype.getFee =
-            function(callback) {
+    // This assumes that only limit orders are being placed, so fees are the
+    // "maker fee" of 0.1%.  It does not take into account volume discounts.
+    Trader.prototype.getFee = function(callback) {
   var makerFee = 0.1;
   callback(false, makerFee / 100);
-}
+};
 
-            Trader.prototype.submit_order =
-                function(type, amount, price, callback) {
+Trader.prototype.submit_order = function(type, amount, price, callback) {
   var args = _.toArray(arguments);
 
   amount = Math.floor(amount * 100000000) / 100000000;
@@ -139,20 +135,19 @@ Trader.prototype.getPortfolio =
 
                             callback(err, data.order_id);
                           });
-}
+};
 
-                Trader.prototype.buy =
-                    function(amount, price, callback) {
+Trader.prototype.buy =
+    function(amount, price, callback) {
   this.submit_order('buy', amount, price, callback);
 }
 
-                    Trader.prototype.sell =
-                        function(amount, price, callback) {
+    Trader.prototype.sell =
+        function(amount, price, callback) {
   this.submit_order('sell', amount, price, callback);
 }
 
-                        Trader.prototype.checkOrder =
-                            function(order_id, callback) {
+        Trader.prototype.checkOrder = function(order_id, callback) {
   var args = _.toArray(arguments);
   this.bitfinex.order_status(order_id, function(err, data, body) {
 
@@ -161,10 +156,9 @@ Trader.prototype.getPortfolio =
 
     callback(err, !data.is_live);
   }.bind(this));
-}
+};
 
-                            Trader.prototype.getOrder =
-                                function(order, callback) {
+Trader.prototype.getOrder = function(order, callback) {
   var args = _.toArray(arguments);
   var get = function(err, data) {
     if (err || !data)
@@ -178,10 +172,9 @@ Trader.prototype.getPortfolio =
   }.bind(this);
 
   this.bitfinex.order_status(order, get);
-}
+};
 
-                                Trader.prototype.cancelOrder =
-                                    function(order_id, callback) {
+Trader.prototype.cancelOrder = function(order_id, callback) {
   var args = _.toArray(arguments);
   this.bitfinex.cancel_order(order_id, function(err, data, body) {
     if (err || !data) {
@@ -196,10 +189,9 @@ Trader.prototype.getPortfolio =
 
     return callback();
   }.bind(this));
-}
+};
 
-                                    Trader.prototype.getTrades =
-                                        function(since, callback, descending) {
+Trader.prototype.getTrades = function(since, callback, descending) {
   var args = _.toArray(arguments);
 
   var path = this.pair;
@@ -219,10 +211,9 @@ Trader.prototype.getPortfolio =
 
     callback(null, descending ? trades : trades.reverse());
   }.bind(this));
-}
+};
 
-                                        Trader.getCapabilities =
-                                            function() {
+Trader.getCapabilities = function() {
   return {
     name : 'Bitfinex',
     slug : 'bitfinex',
@@ -274,6 +265,6 @@ Trader.prototype.getPortfolio =
     tid : 'tid',
     tradable : true
   };
-}
+};
 
-                                            module.exports = Trader;
+module.exports = Trader;
