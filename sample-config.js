@@ -17,6 +17,11 @@ config.okcoin = {
   secret : '',
 };
 
+config.bitfinex = {
+  key : '',
+  secret : ''
+};
+
 config.depthSize = 10;
 
 module.exports = config;

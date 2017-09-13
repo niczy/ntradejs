@@ -1,5 +1,6 @@
 config.js
 **/*.swp
+**/*.swo
 node_modules
 tmp
 tmp.json

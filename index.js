@@ -27,26 +27,31 @@ class Task {
     for (var i = 0; i < this.exchanges.length; i++) {
       for (var j = 0; j < this.exchanges.length; j++) {
         if (i != j) {
-          this.tryTrade(this.exchanges[i], this.exchanges[j]);
+          console.log('\n\n\n\n-----------------\nStart new task\n-----------');
+          await this.tryTrade(this.exchanges[i], this.exchanges[j]);
         }
       }
     }
   }
 
-  tryTrade(buy, sell) {
+  async tryTrade(buy, sell) {
     logger.info('check buying from ' + buy.name + ' and sell to ' + sell.name);
-    logger.info("Best buy price: " + buy.getBuyPrice());
-    logger.info('Best sell price: ' + sell.getSellPrice());
-    const priceDiff = sell.getSellPrice() - buy.getBuyPrice();
+    const sellPrice = await sell.getSellPrice();
+    const buyPrice = await buy.getBuyPrice();
+    logger.info("Best buy price: " + sellPrice);
+    logger.info('Best sell price: ' + buyPrice);
+    const priceDiff = sellPrice - buyPrice;
     if (priceDiff > 0) {
-      const margin = priceDiff / buy.getBuyPrice();
+      const margin = priceDiff / buyPrice;
       logger.info('Margin is: ' + (margin * 100).toFixed(2) + '%');
       if (margin > config.minimalMargin) {
         logger.info('Opportunity found!');
         logger.info('Balance in ' + buy.name + ' is $' + buy.getBalance());
-        if (buy.getBalance() > 0) {
+        const currencyBalance = await buy.getBalance();
+        if (currencyBalance > 0) {
           logger.info('Check ETH balance in ' + sell.name);
-          if (sell.getETHBalance() > 0) {
+          const ethBalance = await sell.getETHBalance();
+          if (ethBalance > 0) {
             logger.info('Start trading something ');
           } else {
             logger.info('Stop trading due to insufficent ETH balance in ' +
@@ -68,8 +73,7 @@ class Task {
 var loop =
     function() {
   new Task().run();
-  console.log('\n\n\n\n-----------------\nStart new task\n-----------');
-  setTimeout(loop, 10000);
+  setTimeout(loop, 1000);
 }
 
 loop();
